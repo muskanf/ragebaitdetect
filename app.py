@@ -7,11 +7,32 @@ st.title("Ragebait Detector")
 st.write("Paste a YouTube link or transcript to estimate how ragebait-like it is.")
 
 RAGE_CATEGORIES = {
-    "Anger": ["corrupt", "disgusting", "evil", "betrayed", "insane", "pathetic", "horrible"],
-    "Fear": ["dangerous", "threat", "crisis", "destroying", "collapse", "under attack"],
-    "Conspiracy": ["they don't want you to know", "wake up", "the truth", "exposed", "cover up"],
-    "Us vs Them": ["elites", "sheep", "brainwashed", "people like you", "these people"],
-    "Exaggeration": ["shocking", "unbelievable", "this changes everything", "you won't believe"]
+    "Anger": [
+        "corrupt", "disgusting", "evil", "betrayed", "insane",
+        "pathetic", "horrible", "pissed off", "grotesque",
+        "depraved", "vulgar", "infuriating", "awful"
+    ],
+    "Fear": [
+        "dangerous", "threat", "crisis", "destroying", "collapse",
+        "under attack", "too late", "dark"
+    ],
+    "Conspiracy": [
+        "they don't want you to know", "wake up", "the truth",
+        "exposed", "cover up", "hiding the truth"
+    ],
+    "Us vs Them": [
+        "elites", "sheep", "brainwashed", "people like you",
+        "these people", "the left", "own the libs"
+    ],
+    "Exaggeration": [
+        "shocking", "unbelievable", "this changes everything",
+        "you won't believe", "losing their minds", "everybody is falling for",
+        "most controversial", "step too far"
+    ],
+    "Insults or Dehumanizing Language": [
+        "freak", "crazy", "triggered", "hose", "no moral compass",
+        "do anything for money"
+    ]
 }
 
 @st.cache_resource
@@ -44,7 +65,7 @@ def analyze_text(text):
             total_matches += len(matches)
 
     word_count = max(len(re.findall(r"\w+", text_lower)), 1)
-    score = min(100, int((total_matches / word_count) * 1000))
+    score = min(100, int(total_matches * 12))
 
     return score, flagged_by_category
 
