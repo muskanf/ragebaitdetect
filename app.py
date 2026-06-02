@@ -1,19 +1,31 @@
 import streamlit as st
 import re
 from src.transcript import get_transcript
+from src.model import train_model, predict_text, test_model
 
 st.title("Ragebait Detector")
 st.write("Paste a YouTube link or transcript to estimate how ragebait-like it is.")
 
-from src.model import train_model, predict_text, test_model
-
 RAGE_CATEGORIES = {
-    "Anger": ["corrupt", "disgusting", "evil", "betrayed", "insane"],
-    "Fear": ["dangerous", "threat", "crisis", "destroying", "collapse"],
-    "Conspiracy": ["they don't want you to know", "wake up", "the truth", "exposed"],
-    "Us vs Them": ["elites", "sheep", "brainwashed", "people like you"],
-    "Exaggeration": ["shocking", "unbelievable", "everyone knows", "always"]
+    "Anger": ["corrupt", "disgusting", "evil", "betrayed", "insane", "pathetic", "horrible"],
+    "Fear": ["dangerous", "threat", "crisis", "destroying", "collapse", "under attack"],
+    "Conspiracy": ["they don't want you to know", "wake up", "the truth", "exposed", "cover up"],
+    "Us vs Them": ["elites", "sheep", "brainwashed", "people like you", "these people"],
+    "Exaggeration": ["shocking", "unbelievable", "this changes everything", "you won't believe"]
 }
+
+@st.cache_resource
+def load_model():
+    return train_model()
+
+@st.cache_data
+def load_accuracy():
+    return test_model()
+
+model = load_model()
+accuracy = load_accuracy()
+
+st.write(f"Naive Bayes test accuracy: {accuracy:.2f}")
 
 def analyze_text(text):
     text_lower = text.lower()
@@ -57,8 +69,9 @@ if st.button("Analyze"):
         st.warning("Please paste some text first.")
     else:
         score, flagged_by_category = analyze_text(text)
+        prediction, confidence = predict_text(model, text)
 
-        st.subheader(f"Ragebait Score: {score}/100")
+        st.subheader(f"Rule-Based Ragebait Score: {score}/100")
 
         if score >= 70:
             st.error("High ragebait likelihood")
@@ -74,3 +87,12 @@ if st.button("Analyze"):
                 st.write(f"**{category}:** {', '.join(matches)}")
         else:
             st.write("No major ragebait phrases found.")
+
+        st.subheader("Naive Bayes Prediction")
+        st.write(f"Prediction: **{prediction}**")
+
+        ragebait_confidence = confidence.get("ragebait", 0)
+        normal_confidence = confidence.get("normal", 0)
+
+        st.write(f"Ragebait confidence: {ragebait_confidence:.2f}")
+        st.write(f"Normal confidence: {normal_confidence:.2f}")
