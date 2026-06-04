@@ -1,11 +1,12 @@
 from urllib.parse import urlparse, parse_qs
+import streamlit as st
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.proxies import WebshareProxyConfig
 
 ytt_api = YouTubeTranscriptApi(
     proxy_config=WebshareProxyConfig(
-        proxy_username="kdexkpkw",
-        proxy_password="c11iu5eme9qe",
+        proxy_username=st.secrets["WEBSHARE_USERNAME"],
+        proxy_password=st.secrets["WEBSHARE_PASSWORD"],
     )
 )
 
