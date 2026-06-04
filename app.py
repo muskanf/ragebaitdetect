@@ -30,7 +30,7 @@ RAGE_CATEGORIES = {
         "most controversial", "step too far"
     ],
     "Insults or Dehumanizing Language": [
-        "freak", "crazy", "triggered", "hose", "no moral compass",
+        "freak", "crazy", "triggered", "stupid", "no moral compass",
         "do anything for money"
     ]
 }
