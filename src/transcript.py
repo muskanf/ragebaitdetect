@@ -1,7 +1,9 @@
+#transcript.py will contain the function to load the 
+#transcript from a YouTube URL using the youtube_transcript_api library
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import YouTubeTranscriptApi
 
-
+#function to extract the video ID from youtube URL
 def extract_video_id(url):
     parsed = urlparse(url)
 
@@ -13,10 +15,10 @@ def extract_video_id(url):
 
     return None
 
-
+#gets the transcript from the YouTube URL and returns it as a single string
 def get_transcript(url):
     video_id = extract_video_id(url)
-
+#invalid youtube URL if video_id is None
     if not video_id:
         raise ValueError("Invalid YouTube URL")
 

@@ -4,8 +4,11 @@ from src.transcript import get_transcript
 from src.model import train_model, predict_text, test_model
 
 st.title("Ragebait Detector")
-st.write("Paste a YouTube link or transcript to estimate how ragebait-like it is.")
-
+st.write("Hello! Paste a YouTube link or transcript to see how ragebait-like it is.")
+st.write("Disclaimer: This is a simple tool for educational purposes and may not be 100% accurate. Use it as a guide and not a definitive judgment.")
+st.write("This tool does not represent any political stance and is designed to analyze content based on language patterns, not ideology.")
+#tried to make a broad category of as many ragebait phrases as possible 
+#to cover a wide range of ragebait content and make the rule-based scoring more effective
 RAGE_CATEGORIES = {
     "Anger": [
         "corrupt", "disgusting", "evil", "betrayed", "insane",
@@ -42,12 +45,12 @@ def load_model():
 @st.cache_data
 def load_accuracy():
     return test_model()
-
+#load the trained model and the accuracy score to display on the app and use for predictions
 model = load_model()
 accuracy = load_accuracy()
 
 st.write(f"Naive Bayes test accuracy: {accuracy:.2f}")
-
+#analyze the text to get rage bait score and the flagged categories and phrases to display on the app
 def analyze_text(text):
     text_lower = text.lower()
     flagged_by_category = {}
@@ -70,7 +73,7 @@ def analyze_text(text):
     return score, flagged_by_category
 
 youtube_url = st.text_input("Paste a YouTube link")
-
+#upload the transcript from the YouTube URL and store it in session state to display in the text area for analysis
 if st.button("Get Transcript"):
     try:
         transcript_text = get_transcript(youtube_url)
@@ -84,7 +87,7 @@ text = st.text_area(
     value=st.session_state.get("transcript", ""),
     height=250
 )
-
+#analyze the text when the button is clicked
 if st.button("Analyze"):
     if text.strip() == "":
         st.warning("Please paste some text first.")
@@ -93,7 +96,7 @@ if st.button("Analyze"):
         prediction, confidence = predict_text(model, text)
 
         st.subheader(f"Rule-Based Ragebait Score: {score}/100")
-
+#score ranges - we thought this is fine but this can be adjusted to maybe 50 or more
         if score >= 70:
             st.error("High ragebait likelihood")
         elif score >= 35:
