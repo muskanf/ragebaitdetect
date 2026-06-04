@@ -2,7 +2,14 @@
 #transcript from a YouTube URL using the youtube_transcript_api library
 from urllib.parse import urlparse, parse_qs
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
 
+ytt_api = YouTubeTranscriptApi(
+    proxy_config=WebshareProxyConfig(
+        proxy_username="kdexkpkw",
+        proxy_password="c11iu5eme9qe",
+    )
+)
 #function to extract the video ID from youtube URL
 def extract_video_id(url):
     parsed = urlparse(url)

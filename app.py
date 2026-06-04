@@ -80,7 +80,7 @@ if st.button("Get Transcript"):
         st.session_state["transcript"] = transcript_text
         st.success("Transcript loaded.")
     except Exception as e:
-        st.error(f"Could not load transcript: {e}")
+        st.error(f"Encountered an error: {e}", icon="🚨")
 
 text = st.text_area(
     "Paste transcript here",
