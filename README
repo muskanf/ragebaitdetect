@@ -1,0 +1,3 @@
+Make sure the requirements are installed before running the streamlit app.
+
+This is a tool made for INTRO TO AI class. It will look at a youtube transcript and see if it has rage bait content.
